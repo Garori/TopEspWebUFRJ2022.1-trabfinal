@@ -231,7 +231,7 @@ function confirmar() {
         'etapa': etapa['titulo'],
         'numero': numeroDigitado
       })
-      ajax('https://trabalho-final-paulo-roma.herokuapp.com/api/votar/'+etapa['titulo']+'/'+numeroDigitado, 'POST', (response) => {
+      ajax('https://trabalho-final-paulo-roma.herokuapp.com/api/votar/' + etapa['titulo'] + '/' + `${numeroDigitado}`, 'POST', (response) => {
         resposta = JSON.parse(response)
         console.log(resposta)
       })
