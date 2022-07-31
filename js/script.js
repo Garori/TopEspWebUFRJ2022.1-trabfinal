@@ -38,36 +38,57 @@ window.onload = () => {
   document.querySelector('.teclado--botao.verde').onclick = () => confirmar()
 }
 document.getElementById("vervotos").addEventListener("click", verVotos);
+document.getElementById("zerarvotos").addEventListener("click", zerarVotos);
 
 function verVotos(){
+  console.log("VER VOTOS EM AÇÃO BABY")
   const element = document.getElementById("divPrefeitos")
   element.innerHTML=""
+  const title = document.createElement("h4")
+  title.innerText = "Prefeitos:"
+  document.getElementById("divPrefeitos").appendChild(title);
+  const tablePrefeitos = document.createElement("table")
+  tablePrefeitos.id = "tablePrefeitos"
+  document.getElementById("divPrefeitos").appendChild(tablePrefeitos)
   const element2 = document.getElementById("divVereadores")
-  element2.innerHTML = ""
+  element2.innerHTML=""
+  const title2 = document.createElement("h4")
+  title2.innerText = "Vereadores:"
+  document.getElementById("divVereadores").appendChild(title2);
+  const tableVereadores = document.createElement("table")
+  tableVereadores.id = "tableVereadores"
+  document.getElementById("divVereadores").appendChild(tableVereadores)
 
   ajax('https://trabalho-final-paulo-roma.herokuapp.com/api/getvotos', 'GET', (response) => {
     resposta = JSON.parse(response)
     // console.log(resposta["prefeito"])
-    const title = document.createElement("h4")
-    title.innerText = "Prefeitos:"
-    document.getElementById("divPrefeitos").appendChild(title);
+   
+    const titulosDiv = document.createElement("tr")
+    titulosDiv.innerHTML = "<th>Número</th><th>Nome</th><th>Partido</th><th>Número de votos</th>"
+    document.getElementById("tablePrefeitos").appendChild(titulosDiv)
     for (candidato of resposta["prefeito"]) {
       // console.log(candidato)
-      const coisa = document.createElement("div");
-      coisa.innerHTML = "<p>Candidato: <b>" + candidato["nome"] + "</b> - número de votos: <b>" + candidato["quant_votos"] + "</b></p>"
-      coisa.className = "prefeito"
-      document.getElementById("divPrefeitos").appendChild(coisa);
+      const coisa = document.createElement("tr");
+      coisa.innerHTML = "<td>" + candidato["numero"] + "</td><td>" + candidato["nome"] + "</td><td>" + candidato["partido"] + "</td><td class='numVotos'><b>" + candidato["quant_votos"] + "</b></td>"
+      document.getElementById("tablePrefeitos").appendChild(coisa);
     }
-    const title2 = document.createElement("h4")
-    title2.innerText = "Vereadores:"
-    document.getElementById("divVereadores").appendChild(title2);
+    
+    const titulosDiv2 = document.createElement("tr")
+    titulosDiv2.innerHTML = "<th>Número</th><th>Nome</th><th>Partido</th><th>Número de votos</th>"
+    document.getElementById("tableVereadores").appendChild(titulosDiv2)
     for (candidato of resposta["vereador"]) {
       // console.log(candidato)
-      const coisa = document.createElement("div");
-      coisa.innerHTML = "<p>Candidato: <b>" + candidato["nome"] + "</b> - número de votos: <b>" + candidato["quant_votos"] + "</b></p>"
-      coisa.className = "prefeito"
-      document.getElementById("divVereadores").appendChild(coisa);
+      const coisa = document.createElement("tr");
+      coisa.innerHTML = "<td>" + candidato["numero"] + "</td><td>" + candidato["nome"] + "</td><td>" + candidato["partido"] + "</td><td class='numVotos'><b>" + candidato["quant_votos"] + "</b></td>"
+      document.getElementById("tableVereadores").appendChild(coisa);
     }
+  })
+}
+
+function zerarVotos(){
+  ajax('https://trabalho-final-paulo-roma.herokuapp.com/api/resetar', 'POST', (response) => {
+    console.log(response)
+    verVotos()
   })
 }
 /**
@@ -232,8 +253,9 @@ function confirmar() {
         'numero': numeroDigitado
       })
       ajax('https://trabalho-final-paulo-roma.herokuapp.com/api/votar/' + etapa['titulo'] + '/' + numeroDigitado.toString(),'POST', (response) => {
-        resposta = JSON.parse(response)
-        console.log(resposta)
+        
+        console.log(response)
+        verVotos()
       })
       console.log(`Votou em ${numeroDigitado}`)
     } else {
@@ -243,8 +265,9 @@ function confirmar() {
         'numero': null
       })
       ajax('https://trabalho-final-paulo-roma.herokuapp.com/api/votar/' + etapa['titulo'] + '/' + '31415923565', 'POST', (response) => {
-        resposta = JSON.parse(response)
-        console.log(resposta)
+        
+        console.log(response)
+        verVotos()
       })
       console.log('Votou Nulo')
     }
@@ -255,8 +278,9 @@ function confirmar() {
         'numero': ''
       })
     ajax('https://trabalho-final-paulo-roma.herokuapp.com/api/votar/' + etapa['titulo'] + '/' + '31415923565', 'POST', (response) => {
-      resposta = JSON.parse(response)
-      console.log(resposta)
+      
+      console.log(response)
+      verVotos()
     })
       console.log('Votou em Branco')
   } else {

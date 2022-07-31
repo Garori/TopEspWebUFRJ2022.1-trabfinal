@@ -111,3 +111,11 @@ h1 {
   flex-direction: row;
   justify-content: space-around;
 }
+
+tr:nth-child(even) {
+  background-color: #b3b3b3;
+}
+
+.numVotos{
+  text-align: center;
+}
