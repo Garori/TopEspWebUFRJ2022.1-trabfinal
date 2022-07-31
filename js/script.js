@@ -41,7 +41,7 @@ document.getElementById("vervotos").addEventListener("click", verVotos);
 document.getElementById("zerarvotos").addEventListener("click", zerarVotos);
 
 function verVotos(){
-  console.log("VER VOTOS EM AÇÃO BABY")
+  // console.log("VER VOTOS EM AÇÃO BABY")
   const element = document.getElementById("divPrefeitos")
   element.innerHTML=""
   const title = document.createElement("h4")
