@@ -105,3 +105,9 @@ h1 {
   font-size: 0.95em;
   background-color: green;
 }
+
+.resultados {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
